@@ -1,0 +1,43 @@
+event_id,vendor_id,event_date,event_type,severity,region_affected,resolution_days
+EV000001,V0002,2026-02-14,Plant fire/safety incident,Low,AMER,3
+EV000002,V0005,2024-08-12,Plant fire/safety incident,Medium,APAC,12
+EV000003,V0008,2023-02-23,Natural disaster,Low,APAC,1
+EV000004,V0008,2022-01-19,Labor strike,High,APAC,58
+EV000005,V0008,2025-01-02,Geopolitical / trade restriction,Medium,APAC,14
+EV000006,V0009,2023-06-09,Financial distress,Low,APAC,4
+EV000007,V0009,2022-09-24,Geopolitical / trade restriction,Low,APAC,1
+EV000008,V0010,2025-12-12,Cyber incident,High,APAC,52
+EV000009,V0010,2025-01-28,Plant fire/safety incident,Low,APAC,2
+EV000010,V0015,2023-07-15,Geopolitical / trade restriction,Medium,APAC,20
+EV000011,V0015,2022-09-20,Plant fire/safety incident,Critical,APAC,85
+EV000012,V0015,2022-05-07,Cyber incident,High,APAC,18
+EV000013,V0015,2025-06-05,Financial distress,Medium,APAC,14
+EV000014,V0016,2022-07-06,Natural disaster,High,APAC,46
+EV000015,V0016,2022-11-07,Geopolitical / trade restriction,Low,APAC,3
+EV000016,V0016,2025-05-27,Plant fire/safety incident,High,APAC,37
+EV000017,V0020,2026-01-24,Labor strike,Medium,APAC,20
+EV000018,V0020,2025-10-17,Financial distress,High,APAC,34
+EV000019,V0025,2022-03-08,Financial distress,Low,APAC,6
+EV000020,V0029,2024-10-04,Cyber incident,High,EMEA,28
+EV000021,V0034,2025-11-20,Financial distress,Medium,APAC,20
+EV000022,V0036,2025-10-21,Geopolitical / trade restriction,Medium,AMER,9
+EV000023,V0036,2026-01-18,Labor strike,High,AMER,18
+EV000024,V0038,2023-08-21,Labor strike,Medium,APAC,11
+EV000025,V0039,2022-06-27,Labor strike,High,APAC,44
+EV000026,V0040,2022-07-27,Financial distress,Medium,AMER,15
+EV000027,V0041,2022-09-23,Regulatory non-compliance,High,AMER,17
+EV000028,V0044,2023-11-05,Geopolitical / trade restriction,High,APAC,43
+EV000029,V0046,2024-12-08,Regulatory non-compliance,Medium,APAC,11
+EV000030,V0046,2022-10-23,Regulatory non-compliance,High,APAC,32
+EV000031,V0047,2024-05-11,Natural disaster,High,APAC,58
+EV000032,V0049,2025-05-16,Labor strike,Critical,AMER,86
+EV000033,V0052,2022-07-25,Financial distress,High,APAC,29
+EV000034,V0052,2024-02-26,Labor strike,Critical,APAC,83
+EV000035,V0056,2024-01-22,Cyber incident,Medium,EMEA,9
+EV000036,V0057,2024-03-03,Natural disaster,Medium,APAC,12
+EV000037,V0058,2023-03-10,Plant fire/safety incident,Low,EMEA,5
+EV000038,V0059,2025-12-31,Geopolitical / trade restriction,High,APAC,17
+EV000039,V0059,2022-01-24,Geopolitical / trade restriction,High,APAC,51
+EV000040,V0068,2022-10-01,Cyber incident,High,AMER,21
+EV000041,V0068,2024-12-12,Regulatory non-compliance,Low,AMER,3
+EV000042,V0068,2024-11-29,Plant fire/safety incident,Medium,AMER,5

@@ -1,0 +1,5 @@
+model,roc_auc,precision,recall,f1
+Logistic Regression (random split),0.7317,0.6455,0.582,0.6121
+Random Forest (random split),0.719,0.701,0.5574,0.621
+Random Forest (time-based split),0.724,0.7209,0.5812,0.6436
+Rule-based composite score (benchmark),0.6957,0.6015,0.6557,0.6275
