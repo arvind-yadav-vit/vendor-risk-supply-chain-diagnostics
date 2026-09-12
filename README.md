@@ -192,3 +192,8 @@ operational forecasting problem — deliberately not "too good to be true."
 ### Developed by Arvind Yadav
 
 Connect with me for Data Analyst or related roles.
+
+
+### Related Project
+
+Related project: see [vendor-risk-bi-diagnostics](https://github.com/arvind-yadav-vit/vendor-risk-bi-diagnostics) for the same problem solved with Excel + Power BI.
