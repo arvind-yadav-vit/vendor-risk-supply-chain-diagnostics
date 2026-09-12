@@ -167,102 +167,27 @@ operational forecasting problem — deliberately not "too good to be true."
 | `src/train_model.py` | ML modeling, train/test methodology, evaluation metrics, benchmarking against a baseline |
 | `dashboard/app.py` | Stakeholder communication, dashboard design, translating data into decisions |
 
-## 7. Interview Preparation
 
-### "Walk me through this project."
-*"I built an end-to-end vendor risk monitoring system for a simulated electronics
-manufacturer. It ingests purchase order, quality inspection, and disruption event
-data, aggregates it into a vendor-quarter feature table, and produces two things: a
-transparent weighted risk scorecard that procurement teams can actually understand
-and defend to a vendor, and a machine learning model that predicts which vendors are
-likely to become risky next quarter — so the team can act proactively instead of
-reactively. I also built an interactive dashboard so a non-technical stakeholder could
-actually use this."*
+## 7. Limitations & Assumptions
 
-### "Why did you build both a rule-based score AND an ML model?"
-*"In real vendor risk management, the rule-based score is what a procurement team
-would actually put in front of a vendor in a business review — it's fully
-explainable: 'your on-time delivery dropped, that's 25% of your score.' You can't do
-that with a black-box model's output. But the rule-based score is backward-looking
-and can't easily capture non-linear interactions. So I trained an ML model on the
-same features to forecast forward-looking risk, and then benchmarked it directly
-against the rule-based score to quantify whether the extra complexity was actually
-worth it — which is the right way to justify using ML instead of just assuming it's
-better."*
-
-### "How did you avoid data leakage in the predictive model?"
-*"Two things. First, the label — 'will this vendor breach next quarter' — is defined
-using only data from the future quarter, and the model only ever sees features from
-the current and prior quarters, never the quarter it's predicting. Second, I
-evaluated with both a random train/test split and a time-based split, where I train
-on earlier quarters and test only on later ones. That's the more rigorous approach
-for a forecasting problem, because a random split can accidentally let the model
-'see' patterns from a time period that, in production, wouldn't exist yet."*
-
-### "Your ROC-AUC is only ~0.72. Is that a good result?"
-*"For this kind of problem — noisy, real-world operational data with genuine
-irreducible uncertainty — yes. If I'd gotten 0.98, I'd be suspicious of leakage
-before I'd be impressed. 0.70–0.75 means the model is finding real, useful signal
-without overfitting, and it modestly beats a well-designed business heuristic, which
-is the realistic bar for this kind of forecasting problem in industry."*
-
-### "What would you do differently in a production version?"
-*"A few things: I'd want real financial data instead of a proxy score — likely from
-a third-party risk data provider like Dun & Bradstreet or a service like Resilinc.
-I'd add a feedback loop so the model retrains as new quarters land, and I'd want to
-validate the risk score against actual downstream cost impact — if a 'high risk'
-vendor rarely actually causes a production problem, the scoring weights need
-recalibrating. I'd also want to run this against real historical incidents to
-back-test whether the scorecard would have actually flagged past disruptions early
-enough to matter."*
-
-### "What's the hardest technical decision you made?"
-*"Defining the prediction target without leakage. It's tempting to just predict
-'is this vendor risky' using the same-quarter features that define risk — but that's
-circular. I had to be disciplined about using only trailing/lagged features to
-predict a *future* quarter's outcome, and I built in both a random and time-based
-split specifically so I could validate that the model wasn't just memorizing
-same-period correlations."*
-
-### Resume bullet points (pick 2–3, tailor to the role)
-
-- Built an end-to-end vendor risk analytics pipeline (Python, pandas, scikit-learn)
-  processing 5,700+ purchase orders across 70 vendors to produce a transparent,
-  weighted composite risk score and a predictive ML model forecasting next-quarter
-  SLA breach risk (ROC-AUC 0.72, beating a rule-based benchmark).
-- Designed a leakage-safe feature engineering pipeline with trailing/rolling
-  performance signals, benchmarking a Random Forest classifier against a business
-  rule-based scorecard to quantify the value of predictive modeling over static rules.
-- Built an interactive Streamlit dashboard (Plotly) surfacing vendor risk heatmaps,
-  scorecards, and an automated watchlist with recommended actions for procurement
-  stakeholders.
-
-## 8. Honest Limitations (know these — an interviewer respects this more than pretending it's perfect)
-
-- All data is synthetic. It's realistically *structured* and *time-anchored*, but it
+- All data is synthetic. It's realistically structured and time-anchored, but it
   doesn't reflect any real company's actual vendors.
-- The financial "credit health score" is a proxy, not real credit bureau data.
-- The rule-based weights (25/20/15/15/15/10) are a reasonable, defensible starting
-  point but would need validation against real business outcomes (e.g., "does a high
-  score actually predict cost-of-poor-quality?") in a production setting.
-- ROC-AUC of ~0.72 means the model is useful for **prioritization** (who to review
-  first), not a guarantee — it should support human judgment, not replace it.
-- The discrete `disruption_events.csv` log (named incidents like strikes or cyber events)
-  is generated as an independent per-vendor random process and does **not** itself show
-  strong count-level clustering around the macro shock windows — only its severity
-  distribution is nudged. The macro-shock realism actually lives in the delivery delay,
-  cost variance, and financial-health signals, which were verified (in the EDA notebook)
-  to genuinely dip/spike in the expected windows. Worth knowing precisely if asked.
-- `.pkl` model files are pinned to the exact scikit-learn/pandas/numpy versions in
-  `requirements.txt` because scikit-learn does not guarantee pickle compatibility across
-  versions — a real, easy-to-miss operational detail when shipping trained models.
 
-### "I noticed your disruption events don't cluster around the macro windows you describe — isn't that a data quality issue?"
-*"Good catch, and you're right to check rather than take the README at face value. The
-discrete disruption event log is a separate per-vendor Poisson process in the generator,
-so its raw count isn't meaningfully time-correlated with the macro windows — only severity
-is. But the delivery and cost signals, which are what actually feed the risk score and the
-ML model, ARE genuinely modulated by those macro windows — I verified on-time delivery
-rate drops from a ~76% baseline to the low-60s% in each shock window. So the realism is
-real, it just lives in a different table than the one you'd naively check first. I'd rather
-be precise about that than let the claim be broader than the data supports."*
+- The financial "credit health score" is a proxy, not real credit bureau data.
+
+- The rule-based weights (25/20/15/15/15/10) are a reasonable, defensible starting
+  point but would need validation against real business outcomes in a production setting.
+
+- ROC-AUC of ~0.72 means the model is useful for prioritization, not a guarantee.
+
+- The discrete `disruption_events.csv` log is generated as an independent per-vendor
+  random process and does not itself show strong count-level clustering around the
+  macro shock windows. The macro-shock realism is reflected in the delivery delay,
+  cost variance, and financial-health signals.
+
+- `.pkl` model files are pinned to the exact scikit-learn/pandas/numpy versions in
+  `requirements.txt` to ensure reproducibility and avoid version compatibility issues.
+
+### Developed by Arvind Yadav
+
+Connect with me for Data Analyst or related roles.
