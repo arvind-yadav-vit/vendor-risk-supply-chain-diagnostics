@@ -167,8 +167,7 @@ likely are they to breach SLA or have a major disruption **next** quarter?"*
 rule-based benchmark (~0.70). This is a *realistic, credible* result for a noisy
 operational forecasting problem — deliberately not "too good to be true."
 
-## 7. Key Files to Know Before an Interview
-
+## 7. Key Files 
 | File | What it demonstrates |
 |---|---|
 | `src/generate_data.py` | Data modeling, understanding of ERP/SRM entity relationships, simulating realistic time-series shocks |
@@ -177,22 +176,19 @@ operational forecasting problem — deliberately not "too good to be true."
 | `src/train_model.py` | ML modeling, train/test methodology, evaluation metrics, benchmarking against a baseline |
 | `dashboard/app.py` | Stakeholder communication, dashboard design, translating data into decisions |
 
-## 8. Honest Limitations (know these — an interviewer respects this more than pretending it's perfect)
+## 8. Limitations & Assumptions
 
-- All data is synthetic. It's realistically *structured* and *time-anchored*, but it
-  doesn't reflect any real company's actual vendors.
+- All data is synthetic. It's realistically structured and time-anchored, but it doesn't reflect any real company's actual vendors.
+
 - The financial "credit health score" is a proxy, not real credit bureau data.
-- The rule-based weights (25/20/15/15/15/10) are a reasonable, defensible starting
-  point but would need validation against real business outcomes (e.g., "does a high
-  score actually predict cost-of-poor-quality?") in a production setting.
-- ROC-AUC of ~0.72 means the model is useful for **prioritization** (who to review
-  first), not a guarantee — it should support human judgment, not replace it.
-- The discrete `disruption_events.csv` log (named incidents like strikes or cyber events)
-  is generated as an independent per-vendor random process and does **not** itself show
-  strong count-level clustering around the macro shock windows — only its severity
-  distribution is nudged. The macro-shock realism actually lives in the delivery delay,
-  cost variance, and financial-health signals, which were verified (in the EDA notebook)
-  to genuinely dip/spike in the expected windows. Worth knowing precisely if asked.
-- `.pkl` model files are pinned to the exact scikit-learn/pandas/numpy versions in
-  `requirements.txt` because scikit-learn does not guarantee pickle compatibility across
-  versions — a real, easy-to-miss operational detail when shipping trained models.
+
+- The rule-based weights (25/20/15/15/15/10) are a reasonable, defensible starting point but would need validation against real business outcomes (e.g., "does a high score actually predict cost-of-poor-quality?") in a production setting.
+
+- ROC-AUC of ~0.72 means the model is useful for prioritization (who to review first), not a guarantee — it should support human judgment, not replace it.
+
+- The discrete `disruption_events.csv` log (named incidents like strikes or cyber events) is generated as an independent per-vendor random process and does not itself show strong count-level clustering around the macro shock windows — only its severity distribution is nudged. The macro-shock realism is reflected in the delivery delay, cost variance, and financial-health signals, which were verified in the EDA notebook to dip/spike in the expected windows.
+
+- `.pkl` model files are pinned to the exact scikit-learn/pandas/numpy versions in `requirements.txt` because scikit-learn does not guarantee pickle compatibility across versions — an important operational detail when shipping trained models.
+### Developed by Arvind Yadav
+
+Connect with me for Data Analyst or related roles.
