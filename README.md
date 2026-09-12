@@ -90,7 +90,17 @@ vendor_risk_scores.csv                          ↓
               dashboard/app.py (Streamlit)
 ```
 
-## 4. How To Run It
+## 4. Screenshots
+
+**Executive Overview** — portfolio-wide risk heatmap, tier distribution, and trend:
+
+![Executive Overview](screenshots/executive_overview.png)
+
+**Vendor Scorecard** — drill-down into a single vendor's risk trend and sub-score breakdown:
+
+![Vendor Scorecard](screenshots/vendor_scorecard.png)
+
+## 5. How To Run It
 
 ```bash
 # 1. Install dependencies
@@ -106,9 +116,9 @@ streamlit run dashboard/app.py
 Everything is seeded (`SEED = 42`), so re-running `run_pipeline.py` reproduces identical
 results — an important, deliberate detail for a project you want to demo reliably.
 
-## 5. Methodology Deep-Dive
+## 6. Methodology Deep-Dive
 
-### 5.1 Rule-based composite risk score (the transparent layer)
+### 6.1 Rule-based composite risk score (the transparent layer)
 
 Each vendor-quarter gets six sub-scores (0–100, higher = riskier), each built by
 min-max normalizing a raw operational signal (with outlier clipping at the 98th
@@ -133,7 +143,7 @@ handled separately rather than averaged in.
 and quality failures cause immediate production impact, so they're weighted higher
 than, say, cost variance, which is painful but rarely stops a production line.
 
-### 5.2 Predictive ML model (the forward-looking layer)
+### 6.2 Predictive ML model (the forward-looking layer)
 
 The rule-based score describes **current** risk. The ML model tries to answer a
 harder, more valuable question: *"given this vendor's behavior this quarter, how
@@ -157,7 +167,7 @@ likely are they to breach SLA or have a major disruption **next** quarter?"*
 rule-based benchmark (~0.70). This is a *realistic, credible* result for a noisy
 operational forecasting problem — deliberately not "too good to be true."
 
-## 6. Key Files to Know Before an Interview
+## 7. Key Files to Know Before an Interview
 
 | File | What it demonstrates |
 |---|---|
@@ -167,27 +177,22 @@ operational forecasting problem — deliberately not "too good to be true."
 | `src/train_model.py` | ML modeling, train/test methodology, evaluation metrics, benchmarking against a baseline |
 | `dashboard/app.py` | Stakeholder communication, dashboard design, translating data into decisions |
 
+## 8. Honest Limitations (know these — an interviewer respects this more than pretending it's perfect)
 
-## 7. Limitations & Assumptions
-
-- All data is synthetic. It's realistically structured and time-anchored, but it
+- All data is synthetic. It's realistically *structured* and *time-anchored*, but it
   doesn't reflect any real company's actual vendors.
-
 - The financial "credit health score" is a proxy, not real credit bureau data.
-
 - The rule-based weights (25/20/15/15/15/10) are a reasonable, defensible starting
-  point but would need validation against real business outcomes in a production setting.
-
-- ROC-AUC of ~0.72 means the model is useful for prioritization, not a guarantee.
-
-- The discrete `disruption_events.csv` log is generated as an independent per-vendor
-  random process and does not itself show strong count-level clustering around the
-  macro shock windows. The macro-shock realism is reflected in the delivery delay,
-  cost variance, and financial-health signals.
-
+  point but would need validation against real business outcomes (e.g., "does a high
+  score actually predict cost-of-poor-quality?") in a production setting.
+- ROC-AUC of ~0.72 means the model is useful for **prioritization** (who to review
+  first), not a guarantee — it should support human judgment, not replace it.
+- The discrete `disruption_events.csv` log (named incidents like strikes or cyber events)
+  is generated as an independent per-vendor random process and does **not** itself show
+  strong count-level clustering around the macro shock windows — only its severity
+  distribution is nudged. The macro-shock realism actually lives in the delivery delay,
+  cost variance, and financial-health signals, which were verified (in the EDA notebook)
+  to genuinely dip/spike in the expected windows. Worth knowing precisely if asked.
 - `.pkl` model files are pinned to the exact scikit-learn/pandas/numpy versions in
-  `requirements.txt` to ensure reproducibility and avoid version compatibility issues.
-
-### Developed by Arvind Yadav
-
-Connect with me for Data Analyst or related roles.
+  `requirements.txt` because scikit-learn does not guarantee pickle compatibility across
+  versions — a real, easy-to-miss operational detail when shipping trained models.
